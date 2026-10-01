@@ -18,7 +18,7 @@ A cybersecurity professional who wants to work as white hat hacker or pentester.
 ### Hack the Box
 | Name | OS | Difficulty | Key Vulnerability | Write-up |
 | :--- | :---: | :---: | :--- | :---: |
-| **Admirer** | Linux | Easy | Local File Inclusion / MariaDB Exploitation | [Writeup](./Writeups/HacktheBox/Admirer.md) |
+| **Admirer** | Linux | Easy | Local File Inclusion / MariaDB Exploitation | [Writeup](./Writeups/HackTheBox/Admirer.md) |
 | **Analytics** | Linux | Easy | Metabase Pre-Auth RCE (CVE-2023-38646) | [Writeup](./Writeups/HackTheBox/01-Easy/Analytics/README.md) |
 | **Bank** | Linux | Easy | Arbitrary File Upload / SUID Exploitation | [Wirteup](./Writeups/HackTheBox/01-Easy/Bank/README.md) |
 | **Blocky** | Linux | Easy | Wordpress / Hardcoded Credentials | [🔗 Read](./Writeups/HackTheBox/01-Easy/Blocky/README.md) |
