@@ -48,5 +48,5 @@ Detailed information are shown below:
 Based on the given information, enumeration was initiated to opened port 21. Anonymous logon method was initated, however,
 permission was denied to access.
 
-Since there were no information given about SSH logon credentials, web app enumeration was initiated for further reconnaissance.
+Since there were no information given about SSH logon credentials, web app enumeration was initiated for further reconnaissance. 
 [This](./images/AdmirerWebApp.png) is the web page running on the target system.
