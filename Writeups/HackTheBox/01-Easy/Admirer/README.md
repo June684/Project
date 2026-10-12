@@ -126,5 +126,86 @@ User-agent: *
 
 # This folder contains personal contacts and creds, so no one -not even robots- should see it - waldo
 Disallow: /admin-dir
+```
+<br>
+According to `robots.txt`, checking /admin-dir is necessary to gather further information about access point. However, access to the directory was denied due to the permission. `ffuf` was used to discover hidden contents under this directory.
+
+```bash
+ffuf -c -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://10.129.229.101/admin-dir/FUZZ -o php,txt
+```
+```bash
+________________________________________________
+
+ :: Method           : GET
+ :: URL              : http://10.129.229.101/admin-dir/FUZZ
+ :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/Web-Content/common.txt
+ :: Output file      : php,txt
+ :: File format      : json
+ :: Follow redirects : false
+ :: Calibration      : false
+ :: Timeout          : 10
+ :: Threads          : 40
+ :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500
+________________________________________________
+
+.hta                    [Status: 403, Size: 279, Words: 20, Lines: 10, Duration: 2648ms]
+.htpasswd               [Status: 403, Size: 279, Words: 20, Lines: 10, Duration: 2673ms]
+.htaccess               [Status: 403, Size: 279, Words: 20, Lines: 10, Duration: 3625ms]
+contacts.txt            [Status: 200, Size: 350, Words: 19, Lines: 30, Duration: 299ms]
+credentials.txt         [Status: 200, Size: 136, Words: 5, Lines: 12, Duration: 301ms]
+:: Progress: [4750/4750] :: Job [1/1] :: 98 req/sec :: Duration: [0:00:52] :: Errors: 0 ::
+```
+<br>
+
+Among the discovered contents, only permitted contents under `/admin-dir` are `contacts.txt` and `credentials.txt`. New testable credentials are found in the contents of `credentials.txt`. New e-mail addresses are also discovered under `contacts.txt`.
+```bash
+[Internal mail account]
+w.cooper@admirer.htb
+fgJr6q#S\W:$P
+
+[FTP account]
+ftpuser
+%n?4Wz}R$tTF7
+
+[Wordpress account]
+admin
+w0rdpr3ss01!
+```
+```bash
+##########
+# admins #
+##########
+# Penny
+Email: p.wise@admirer.htb
+
+
+##############
+# developers #
+##############
+# Rajesh
+Email: r.nayyar@admirer.htb
+
+# Amy
+Email: a.bialik@admirer.htb
+
+# Leonard
+Email: l.galecki@admirer.htb
+
+
+
+#############
+# designers #
+#############
+# Howard
+Email: h.helberg@admirer.htb
+
+# Bernadette
+Email: b.rauch@admirer.htb
+```
+<br>
+
+
+
+
 
 
