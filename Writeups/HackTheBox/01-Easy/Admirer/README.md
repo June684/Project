@@ -1,6 +1,6 @@
 # [HTB] Admirer - Penetration Testing Report
 
-## Executive Summary
+# Executive Summary
 * **Target OS:** Linux
 * **Difficulty:** Easy
 * **Target IP:** 10.129.229.101
@@ -8,7 +8,7 @@
 
 ---
 
-## 1. Reconnaissance
+# 1. Reconnaissance
 
 Port scan has been done via nmap against target.
 ```bash
