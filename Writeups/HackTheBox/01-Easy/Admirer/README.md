@@ -325,13 +325,15 @@ adminer.php was found as a content under the `utility-scripts`. Accessing to the
 ## 3. Exploitation
 
 1. Adminer 4.7.8 LFI/SSR Vulnerability
+<br>
+
 It is discovered that the vulnerability allows attacker to connect to the victim's database via creating mysql user account connected to the address of victim. Below is the process of how attacker will exploit LFI/SSR Vulnerability.
 ```bash
 sudo systemctl start mysql
 ```
 <br>
 
-1-1. create user account and database owned by the user on the victim's database server to gather vulnerable information via execution of MySQL command
+ 1-1. create user account and database owned by the user on the victim's database server to gather vulnerable information via execution of MySQL command
 ```bash
 MariaDB [(none)]> create user 'first'@'10.129.229.101' identified by 'password';
 Query OK, 0 rows affected (0.001 sec)
