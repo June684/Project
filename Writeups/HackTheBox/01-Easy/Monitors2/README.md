@@ -37,6 +37,6 @@ Result:
 <br>
 
 # 2. Web Enumeration
-There was no hidden directory or subdomains existed on the web page as a result of fuzzing. For more enumeration, hydra was also used for bruteforcing against web application, but no significant information was found.
+There was no hidden directory or subdomains existed on the [web page](./) as a result of fuzzing. For more enumeration, hydra was also used for bruteforcing against web application, but no significant information was found.
 
 
