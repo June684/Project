@@ -86,7 +86,7 @@ Priority: u=0, i
 ```
 <br>
 
-3. Check if the exploit works properly by sending the [editted request](./images/). Following response indicates that the exploitation is working even if the attacker cannot directly see output.
+3. Check if the exploit works properly by sending the editted request. Following response indicates that the exploitation is working even if the attacker cannot directly see output.
 ```
 RESPONSE
 
@@ -109,7 +109,7 @@ Content-Length: 55
 ```
 <br>
 
-4. start python listener on port 8000 and nc listener on any available port for reverse shell. 
+4. Start python listener on port 8000 and nc listener on any available port for reverse shell. [Process of sending malicious file](./images/) to the target internal server was successful. 
 
 
 
