@@ -40,7 +40,7 @@ Result:
 There was no hidden directory or subdomains existed on the [web page](./images/new.png) as a result of fuzzing. For more enumeration, hydra was also used for bruteforcing against web application, but no significant information was found. The web application was running by `Cacti 1.2.22`.
 
 ## BurpSuite
-For further enumeration, `BurpSuite` was used against target how web application reacts when it is triggered. [Login request](.imgaes/) was intercepted.
+For further enumeration, `BurpSuite` was used against target how web application reacts when it is triggered. [Login request](./imgaes/Screenshot_2026-10-14_02_29_28.png) was intercepted.
 
 # 3. Exploitation
 ## 1. CVE-2022-46169
