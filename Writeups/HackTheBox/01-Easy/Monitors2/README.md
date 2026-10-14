@@ -47,7 +47,7 @@ For further enumeration, `BurpSuite` was used against target how web application
 `Cacti 1.2.22` was discovered that it is vulnerable against `Cacti RCE` (CVE-2022-46169). Several attempts of exploiting the vulnerability, accessing the internal system via RCE was successful. Following process shows PoC of how exploitation worked.
 <br>
 
-1. Send the intercepted request to [repeater](./images/) and change the request method
+1. Send the intercepted request to [repeater](./images/Screenshot_2026-10-14_02_40_47.png) and change the [request method](./images/)
 ```
 REQUEST
 
