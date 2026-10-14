@@ -109,7 +109,10 @@ Content-Length: 55
 ```
 <br>
 
-4. Start python listener on port 8000 and nc listener on any available port for reverse shell. [Process of sending malicious file](./images/Screenshot_2026-10-14_03_31_33.png) to the target internal server was successful, confirmed by GET request from target system. 
+4. Start python listener on port 8000 and nc listener on any available port for reverse shell. [Process of sending malicious file](./images/Screenshot_2026-10-14_03_31_33.png) to the target internal server was successful, confirmed by GET request from target system.
+<br>
+
+5. [Gain access](./images/) as `www-data` permission into server
 
 
 
