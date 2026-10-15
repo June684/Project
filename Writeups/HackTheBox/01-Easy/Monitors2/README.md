@@ -112,7 +112,25 @@ Content-Length: 55
 4. Start python listener on port 8000 and nc listener on any available port for reverse shell. [Process of sending malicious file](./images/Screenshot_2026-10-14_03_31_33.png) to the target internal server was successful, confirmed by GET request from target system.
 <br>
 
-5. [Gain access](./images/Screenshot_2026-10-14_03_32_08.png) as user `www-data` permission into server
+5. [Gain access](./images/Screenshot_2026-10-14_03_32_08.png) as user `www-data` permission into server.
+
+## 2. Stablization
+Following processes are for stablized shell to not lose connection.
+
+1. Start shell script as bash.
+```bash
+script /dev/null -c bash
+```
+
+2. Move process to background and stablize with following script. [Here](./images/Screenshot_2026-10-14_03_32_51.png) is the result.
+```bash
+ctrl+z
+stty raw -echo; fg
+enter twice
+```
+<br>
+
+With stablized shell, it could prevent accidental connection lose by pressing `ctrl+c` accidently.
 
 # 4. Lateral Movement
 Before directory enumeration, for searching file that was set `suid bit` in the entire system, which potentially allows user to escalate privilege as root user, following command was used.
@@ -120,11 +138,50 @@ Before directory enumeration, for searching file that was set `suid bit` in the 
 find / -perm -4000 2>/dev/null
 ```
 
-# 5. Privilege Escalation Under Docker Environment
-As result, [few executables](./images/) were found with suid bit. No special files were existed that allows current user to execute among findings except `capsh`. Checking manual of the file showed that it bears possibility to escalate privilege of current user. Research was done for effective use of following executable, and [root user privilege](./images/) was acquired.
+## 1. Privilege Escalation Under Docker Environment
+As result, [few executables](./images/Screenshot_2026-10-14_03_37_43.png) were found with suid bit. No special files were existed that allows current user to execute among findings except `capsh`. Checking manual of the file showed that it bears possibility to escalate privilege of current user. Research was done for effective use of following executable, and [root user privilege](./images/Screenshot_2026-10-14_03_47_00.png) was acquired.
 <br>
 
 Based on internal server enumeration, since the server name was described as random alphanumeric, which indicates the attacker gained access to docker container involved in the server. Root privilege under docker container successfully acquired.
+
+## 2. SQL Server Enumeration
+Continuing enumeration, [config.php](./images/Screenshot_2026-10-14_03_33_55.png) was found under `include` directory. [Contents](./images/Screenshot_2026-10-14_03_34_21.png) of the file include credentials for logging into MySQL server.
+```bash
+mysql -u root -proot -h db
+```
+<br>
+
+After logging into [MySQL server](./images/Screenshot_2026-10-14_03_48_08.png), as shown in `config.php`, database named [cacti](./images/Screenshot_2026-10-14_03_48_33.png) was found in the server.
+<br>
+
+Using `cacti`, contained tables were found by mysql command `show tables;`. Enumerating category of tables, table named [user_auth](./images/Screenshot_2026-10-14_03_48_56.png) was found, which was consiedered to contain critical information about user authentication. [Here](./images/Screenshot_2026-10-14_03_49_18.png) is the contents of `user_auth`.
+
+## 3. Cracking Password Hash
+According to the format of discovered hash, it was confirmed that the hash type was `bycrypt`, which could be cracked by `hashcat`. Here is the process of how hash was cracked.
+
+1. Save found hashes in file and run [hashcat](./images/Screenshot_2026-10-14_03_50_33.png). Format `bycrypt` could be cracked by setting `-m` flag as `3200`, which targets bycrypt.
+<br>
+
+2. After hashcat finished its process, use `--show` flag to view [cracked credential](./images/Screenshot_2026-10-14_03_50_43.png). Username `marcus`'s password hash was cracked.
+
+## 4. SSH
+Using cracked password, [SSH](./images/Screenshot_2026-10-14_03_51_29.png) into internal server was successful.
+
+# 5. Privilege Escalation
+Basic enumeration including `sudo -l`, looking for files that contains suid bit via `find`, and allowed permission for user `marcus` didn't provide useful information for gaining access as root user. However, looking back into docker container, since privilege escalation was achieved, finding location of the container was initiated.
+
+1. Use `mount` to discover docker containers in entire server. [Here](./images/Screenshot_2026-10-14_03_51_43.png) is the result of executing `mount` command
+
+2. Amond the result, look for word `upperdir` and `workdir`, which is the location of the [target docker container](./images/Screenshot_2026-10-14_03_52_43.png).
+
+3. Move to the discovered directory address of container and [confirm](./images/Screenshot_2026-10-14_03_55_35.png) the location matches.
+
+It is confirmed when the file was made by root user under docker container, the main server recognized the file's ownership as root user, which is misconfiguration of shared privilege between docker container and main internal server. Using this vulnerability, copying `/bin/bash` under docker container, changing ownership of file, and set uid bit as 0 was performed.
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/2947195b-cdc7-4dd0-808e-a8a536349dad" />
+
+By executing the binary file, gaining access as root privilege was successful.
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/b9a28c1b-6678-4786-99a4-f7520cda56ef" />
+
 
 
 
