@@ -177,7 +177,9 @@ Basic enumeration including `sudo -l`, looking for files that contains suid bit 
 3. Move to the discovered directory address of container and [confirm](./images/Screenshot_2026-10-14_03_55_35.png) the location matches.
 
 It is confirmed when the file was made by root user under docker container, the main server recognized the file's ownership as root user, which is misconfiguration of shared privilege between docker container and main internal server. Using this vulnerability, copying `/bin/bash` under docker container, changing ownership of file, and set uid bit as 0 was performed.
+
 <img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/2947195b-cdc7-4dd0-808e-a8a536349dad" />
+<br>
 
 By executing the binary file, gaining access as root privilege was successful.
 
