@@ -114,18 +114,17 @@ Content-Length: 55
 
 5. [Gain access](./images/Screenshot_2026-10-14_03_32_08.png) as user `www-data` permission into server
 
-# 4. Privilege Escalation Under Docker Environment
-As result, few executables were found with suid bit. No special files were existed that allows current user to execute among findings except `capsh`. Checking manual of the file showed that it bears possibility to escalate privilege of current user. Research was done for effective use of following executable, and root user privilege was acquired.
-<br>
-
-Based on internal server enumeration, since the server name was described as random alphanumeric, it indicates the attacker gained access to docker container involved in the server.........
-
-# 5. Lateral Movement
+# 4. Lateral Movement
 Before directory enumeration, for searching file that was set `suid bit` in the entire system, which potentially allows user to escalate privilege as root user, following command was used.
 ```bash
 find / -perm -4000 2>/dev/null
 ```
 
+# 5. Privilege Escalation Under Docker Environment
+As result, few executables were found with suid bit. No special files were existed that allows current user to execute among findings except `capsh`. Checking manual of the file showed that it bears possibility to escalate privilege of current user. Research was done for effective use of following executable, and [root user privilege](./images/) was acquired.
+<br>
+
+Based on internal server enumeration, since the server name was described as random alphanumeric, which indicates the attacker gained access to docker container involved in the server. Root privilege under docker container successfully acquired.
 
 
 
