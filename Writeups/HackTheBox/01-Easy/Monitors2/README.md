@@ -184,25 +184,8 @@ By executing the binary file, gaining access as root privilege was successful.
 
 <img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/b9a28c1b-6678-4786-99a4-f7520cda56ef" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 6. Remediation & Mitigation
+* **Software patch and update:** Update Cacti service to recent version that does not contain vulnerability
+* **Reinforce Container Security:** Upgrade Docker daemon for solving the vulnerability of `container escape`
+* **Lest Privilege:** Strictly limit database accessibility and prevent sensitive credentials to be exposured from config file or source code as plaintext
 
