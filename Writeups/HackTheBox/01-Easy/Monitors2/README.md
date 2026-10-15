@@ -180,6 +180,7 @@ It is confirmed when the file was made by root user under docker container, the 
 <img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/2947195b-cdc7-4dd0-808e-a8a536349dad" />
 
 By executing the binary file, gaining access as root privilege was successful.
+
 <img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/b9a28c1b-6678-4786-99a4-f7520cda56ef" />
 
 
