@@ -157,6 +157,28 @@ phil@inject:~$
 ```
 
 ## 2. Shell as Root
+Discovered that the root user runs the `Ansible Playbook` was running on the system periodically on the `/opt/automation/tasks`. Checking the file permission and configuration, it was allowed for user `phil` to create malicious playbook, which will allow attacker to gain root access. Following is the used payload.
+```bash
+- hosts: localhost
+  tasks:
+    - name: checking webapp service
+      shell: cp /bin/bash /tmp/bash; chown root:root /tmp/bash; chmod 4755 /tmp/bash
+```
+
+Script above copy bash binary to `/tmp` directory, change permission and ownership of file as root user, and set suid bit, making executable for every user existing in the system. After few minutes, malicious playbook file was gone, which implies the task ran as privileged user. Checking the `/tmp` directory, `bash` file was successfully created with expected permission and ownership.
+<img width="550" height="300" alt="image" src="https://github.com/user-attachments/assets/4b217942-1621-4ae1-9ae6-a8aec5c30a91" />
+
+<br>
+
+Executing the file allowed attacker to gain access as privileged user.
+<img width="550" height="250" alt="image" src="https://github.com/user-attachments/assets/667427c7-d1b7-475c-87ae-f92adaebf75e" />
+
+---
+
+# 5. Remediation and Mitigation
+
+
+
 
 
 
