@@ -4,7 +4,7 @@
 * **Target OS:** Linux
 * **Difficulty:** Easy
 * **Target IP:** 10.129.228.213
-* **Vectors Used:** Adminer 4.7.8 LFI/SSR Vulnerability & Python Library Hijacking
+* **Vectors Used:** Directory Traversal (LFI) & Spring Cloud Function RCE (CVE-2022-22963) & Ansible Automation Abuse
 
 ---
 
@@ -69,10 +69,15 @@ Sending the `GET request` to repeater, parameter named `img` was revealed direct
 
 Based on the shown result above, attack was successful. With the information attacker could read file through parameter named `img`, further information gathering was performed.
 
+<br>
 
+Checking `/var/www` directory, which usually contains the configuration information about web application, directory named `WebApp` was discovered. Looking into the direcotry, file name `pom.xml` was fonud. Gathering information about `.xml` extension, it is discovered that it usually contains detailed web application information, including version and running service for maintenance. Following information was discovered.
 
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/38b8f3df-2fda-4c07-9a33-03f7f7c613db" />
 
+---
 
+## CVE-2022-22693
 
 
 
