@@ -41,11 +41,36 @@ Detailed information are shown below:
 |8080|open|nagios-nsca|
 <br>
 
+---
+
 # 2. Vulnerability Assessment
 
 ## BurpSuite
 
 Performing web app enumeration using BurpSuite, following request was intercepted.
+<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/4c7eabac-0ac5-4277-a6fc-1dc42846c075" />
+
+<br>
+
+Forwarding the following request, following GET request was received.
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/ef052178-8268-438a-9b39-9960510279c2" />
+
+---
+
+# 3. Exploitation
+
+## Directory Traversal
+
+Sending the `GET request` to repeater, parameter named `img` was revealed directly, which could cause `directory traversal attack` in the victim's viewpoint. With the knowledge, attack was performed by putting `../../../../../../etc/passwd` to read `/etc/passwd` file in the internal server to revealed parameter, which caused following result shown in `response` section.
+
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/0b1173f3-4d7c-436b-ba82-8c382f141474" />
+
+<br>
+
+Based on the shown result above, attack was successful. With the information attacker could read file through parameter named `img`, further information gathering was performed.
+
+
+
 
 
 
