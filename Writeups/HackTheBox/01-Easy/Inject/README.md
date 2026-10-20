@@ -176,7 +176,11 @@ Executing the file allowed attacker to gain access as privileged user.
 ---
 
 # 5. Remediation and Mitigation
+* **Standardization of directory and input field sanitization:** When downloading file and viewing uploaded contents, preveng directory traversal by using `basename()` for blocking access to upper directory in the system.
 
+* **Patching software and up to date software:** Upgrade Spring Cloud's third party library to recent security patched version.
+
+* **Preventing automation tool permission in the internal system:** Strictly limit access control of system automation working directory to prevent other users creating or changing normal files to malicious files.
 
 
 
