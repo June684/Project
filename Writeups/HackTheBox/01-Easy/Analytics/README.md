@@ -58,8 +58,18 @@ vi /etc/hosts
 
 <br>
 
+Successfully gained access to login page via visiting url `data.analytical.htb`.
+
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/fe2908ed-e520-4101-bb10-104097ed5cb9" />
+
 
 # 3. Exploitation
+## 1. CVE-2023-38646 
+Confirmed login page was running by `Metabase` instance, checking the version was necessary for proper exploitation, which was `v0.46.6`.
+```bash
+curl http://data.analytical.htb | grep version
+```
+It is confirmed that the version of `Metabase` is vulnerable to `CVE-2023-38646 (Pre-Authentication Remote Code Execution)`, which is occurred because of the accessibility of users accessing a special token called `setup-token` used for completing the setup process. Unauthorized users, as well, could access the `setup-token` even after the setup process is done, since it remained active.
 
 
 # 4. Privilege Escalation
