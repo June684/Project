@@ -293,7 +293,7 @@ $password = "]F7jLHw:*G>UPrTo}~A"d6b";
 ```
 <br>
 
-Attempt to login as user `waldo` via ssh was failed with the credentials above. However, contents of `admin-dir` was discovered in the directory name `w4ld0s_s3cr3t_d1r`, enumeration of `utility-scripts` was legit looking. (fix)
+Attempt to login as user `waldo` via ssh was failed with the credentials above. However, contents of `admin-dir` was discovered in the directory name `w4ld0s_s3cr3t_d1r`, enumeration of `utility-scripts` was worth checking.
 ```bash
 ffuf -c -w /usr/share/wordlists/dirb/big.txt -u http://10.129.229.101/utility-scripts/FUZZ -e .php
 ```
@@ -385,7 +385,9 @@ fields terminated by "\n"
 ```
 <br>
 
-6. Execution result could be seen on `select` section (picture)
+6. Execution result could be seen on `select` section.
+<img width="1280" height="772" alt="image" src="https://github.com/user-attachments/assets/23b4977c-af6e-4660-8c4f-7f45ccc8994e" />
+
 <br>
 
 ## SSH
