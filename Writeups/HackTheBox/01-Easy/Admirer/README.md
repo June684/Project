@@ -391,8 +391,7 @@ fields terminated by "\n"
 <br>
 
 ## SSH
-credential has been found in the `index.php` file. Using the following credential allows attacker to access into the victim's internal server, allowed attacker to successfully gain access as privilege of user `waldo`.
-(picture & command)
+Credential has been found in the `index.php` file. Using the following credential allows attacker to access into the victim's internal server, allowed attacker to successfully gain access as privilege of user `waldo`.
 
 # 4. privilege escalation
 Since attacker knows the password of user `waldo`, situation allows for attacker to check the possibility of command execution as root user's privilege. Here is the result
@@ -408,7 +407,7 @@ User waldo may run the following commands on admirer:
 ```
 <br>
 
-user `waldo` could run the following script `admin_tasks.sh` as root user's privilege, which potentially allows to gain access on the system as root user.
+User `waldo` could run the following script `admin_tasks.sh` as root user's privilege, which potentially allows to gain access on the system as root user.
 Checking the content of the script, on the `backup_web()` function, it is confirmed that it runs the script named `backup.py` located on directory `/opt/scripts`.
 ```
 backup_web()
