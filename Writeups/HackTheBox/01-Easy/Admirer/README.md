@@ -42,8 +42,8 @@ Detailed information are shown below:
 |port|status|service|
 |:---|:---|:---|
 |21|open|FTP(vsftpd 3.0.3)|
-|22|open|SSH(OpenSSH 7.4p1|
-|80|open|HTTP(Apache httpd 2.4.25|
+|22|open|SSH(OpenSSH 7.4p1)|
+|80|open|HTTP(Apache httpd 2.4.25)|
 <br>
 Based on the given information, enumeration was initiated to opened port 21. Anonymous logon method was initated, however,
 permission was denied to access.
