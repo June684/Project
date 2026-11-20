@@ -155,13 +155,27 @@ It is confirmed that there is one user that has bash shell excluding root user, 
 
 <br>
 
-It is discovered that the file contains `DB_PASSWORD` and `FTP_USER`, `FTP_PASS`, which probably would allow attacker to login to internal FTP server. Attempting to login to FTP server was successful using credential above. Roaming inside FTP server, under the `blog` directory, `send_email.php` was found. By using `get` command, the file was successfully copied into the attacker's local server:
+It is discovered that the file contains `DB_PASSWORD` and `FTP_USER`, `FTP_PASS`, which probably would allow attacker to login to internal FTP server. Attempting to login to FTP server was successful using credential above:
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/b84c285b-96e7-40b4-8ede-edbb5f064308" />
+
+<br>
+
+Roaming inside FTP server, under the `blog` directory, `send_email.php` was found. By using `get` command, the file was successfully copied into the attacker's local server:
 <img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/f971f6d7-a086-41de-be14-1d5236ea195d" />
 
 <br>
 
+Checking the contents, following information was gathered:
+```bash
+$mail->Host = "mail.metapress.htb";
+$mail->SMTPAuth = true;                          
+$mail->Username = "jnelson@metapress.htb";                 
+$mail->Password = "Cb4_JmWM8zUZWMu@Ys";                           
+$mail->SMTPSecure = "tls";                           
+$mail->Port = 587;
+```
 
-
+SSH login using the `jnelson`'s credential was successful.
 
 
 
